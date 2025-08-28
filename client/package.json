@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@svgr/webpack": "^8.1.0",
     "normalize.css": "^8.0.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -28,6 +27,7 @@
     "globals": "^16.3.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "vite-plugin-svgr": "^4.5.0"
   }
 }

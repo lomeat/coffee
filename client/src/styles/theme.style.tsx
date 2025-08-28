@@ -2,17 +2,62 @@ import type { DefaultTheme } from "styled-components/dist/types";
 
 export const theme: DefaultTheme = {
   background: {
-    white: "#fffef8",
-    lightblue: "#f1f5fd",
+    primary: "#fffef8",
+    secondary: "#f1f5fd",
+    accent: "#2E3AC2",
   },
+
   font: {
-    large: {
-      medium: {
+    title: {
+      fontWeight: 500,
+      fontFamily: "SF, sans-serif",
+      fontSize: "25px",
+      lineHeight: "30px",
+    },
+    heading: {
+      fontWeight: 700,
+      fontFamily: "SF, sans-serif",
+      fontSize: "22px",
+      lineHeight: "26px",
+    },
+    caption: {
+      large: {
+        fontWeight: 500,
+        fontFamily: "SF, sans-serif",
+        fontSize: "20px",
+        lineHeight: "24px",
+      },
+      small: {
+        fontWeight: 500,
+        fontFamily: "SF, sans-serif",
+        fontSize: "12px",
+        lineHeight: "14px",
+      },
+    },
+    text: {
+      large: {
         fontWeight: 500,
         fontFamily: "SF, sans-serif",
         fontSize: "18px",
         lineHeight: "24px",
       },
+      medium: {
+        fontWeight: 500,
+        fontFamily: "SF, sans-serif",
+        fontSize: "16px",
+        lineHeight: "24px",
+      },
+      small: {
+        fontWeight: 500,
+        fontFamily: "SF, sans-serif",
+        fontSize: "14px",
+        lineHeight: "16px",
+      },
     },
+  },
+
+  color: {
+    primary: "#402824",
+    accent: "#2E3AC2",
   },
 };

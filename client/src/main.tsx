@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ThemeProvider } from "styled-components";
+import "normalize.css";
 
 import { App } from "./app";
 import { GlobalStyles } from "./styles/global.style";

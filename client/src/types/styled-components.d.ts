@@ -10,13 +10,19 @@ type Font = {
 declare module "styled-components" {
   export interface DefaultTheme {
     background: {
-      white: string;
-      lightblue: string;
+      primary: string;
+      secondary: string;
+      accent: string;
     };
     font: {
-      large: {
-        medium: Font;
-      };
+      title: Font;
+      heading: Font;
+      caption: { large: Font; small: Font };
+      text: { large: Font; medium: Font; small: Font };
+    };
+    color: {
+      primary: string;
+      accent: string;
     };
   }
 }
