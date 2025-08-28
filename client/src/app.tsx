@@ -137,12 +137,12 @@ const CardPrice = styled.span<{ $isSmall?: boolean }>`
   background: ${(p) => p.theme.background.primary};
 `;
 
-const BlueTest = styled.div`
-  width: 100%;
-  height: 200px;
-  background: ${({ theme }) => theme.background.secondary};
-  border-radius: 15px;
-`;
+// const BlueTest = styled.div`
+//   width: 100%;
+//   height: 200px;
+//   background: ${({ theme }) => theme.background.secondary};
+//   border-radius: 15px;
+// `;
 
 const Wrapper = styled.div`
   display: flex;
