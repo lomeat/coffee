@@ -8,10 +8,24 @@ type IconProps = {
   name?: IconName;
   size?: number;
   color?: string;
+  type?: "button";
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export function Icon({ name, size, color }: IconProps) {
+export function Icon({ name, size, color, type, onClick }: IconProps) {
   const IconComponent = name ? icons[name] : DefaultIcon;
+
+  if (type === "button") {
+    return (
+      <Button onClick={onClick}>
+        <IconComponent
+          width={size || 24}
+          height={size || 24}
+          color={color || "#402824"}
+        />
+      </Button>
+    );
+  }
 
   return (
     <IconComponent
@@ -27,4 +41,12 @@ const DefaultIcon = styled.div`
   border-radius: 100%;
   width: 24px;
   height: 24px;
+`;
+
+const Button = styled.button`
+  border: 0;
+  border-radius: 100%;
+  background: rgba(64, 40, 36, 0.05);
+  width: 35px;
+  height: 35px;
 `;

@@ -1,10 +1,8 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 import { Icon } from "./icon";
 import { importImages } from "./utils/importImages";
-import { useContext, useState } from "react";
-
-import { ThemeContext } from "./styles/context";
 
 type Card = {
   id: number;
@@ -24,8 +22,6 @@ const cards: Card[] = coffeeImages.map((value, index) => ({
 }));
 
 export function App() {
-  const toggleTheme = useContext(ThemeContext);
-
   const [isVisible, setIsVisible] = useState(false);
 
   function toggleModal() {
@@ -34,21 +30,6 @@ export function App() {
 
   return (
     <Wrapper>
-      <Header>
-        <Flex $isSpace>
-          <Flex $gap={10}>
-            <HeaderButton>
-              <Icon name="MapIcon" />
-            </HeaderButton>
-            <HeaderSpan>Выбрать кофейню</HeaderSpan>
-          </Flex>
-          <HeaderButton onClick={toggleTheme}>
-            <Icon name="ProfileIcon" />
-          </HeaderButton>
-        </Flex>
-        <HeaderSearch placeholder="найди свой напиток" />
-      </Header>
-
       <Container>
         <ContainerTitle>недавнее</ContainerTitle>
         <CardRow>
@@ -98,9 +79,7 @@ export function App() {
       <ModalWrapper $isVisible={isVisible}>
         <BasketWrapper>
           <h2>Пiшов нахуй</h2>
-          <HeaderButton onClick={toggleModal}>
-            <Icon name="CrossIcon" />
-          </HeaderButton>
+          <Icon name="CrossIcon" type="button" onClick={toggleModal} />
         </BasketWrapper>
       </ModalWrapper>
     </Wrapper>
@@ -244,60 +223,6 @@ const ContainerTitle = styled.h2`
   ${(p) => p.theme.font.caption.large}
   margin: 0;
   padding: 0;
-`;
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  gap: 10px;
-  /* background: #fffef8; */
-  /* border-radius: 0 0 20px 20px; */
-`;
-
-const Flex = styled.div<{
-  $isSpace?: boolean;
-  $isColumn?: boolean;
-  $gap?: number;
-  $padding?: number;
-}>`
-  display: flex;
-  justify-content: ${({ $isSpace }) =>
-    $isSpace ? "space-between" : "flex-start"};
-  flex-direction: ${({ $isColumn }) => ($isColumn ? "column" : "row")};
-  gap: ${({ $gap }) => `${$gap}px`};
-  padding: ${({ $padding }) => `${$padding}px`};
-  align-items: center;
-`;
-
-const HeaderButton = styled.button`
-  border: 0;
-  border-radius: 100%;
-  background: rgba(64, 40, 36, 0.05);
-  width: 35px;
-  height: 35px;
-`;
-
-const HeaderSearch = styled.input`
-  border-radius: 15px;
-  padding: 15px;
-  background: rgba(64, 40, 36, 0.05);
-  border: 1px solid transparent;
-  outline: none;
-
-  &::placeholder {
-    color: rgba(64, 40, 36, 0.45);
-  }
-
-  &:focus {
-    color: ${(p) => p.theme.color.primary};
-    border: 1px solid rgba(64, 40, 36, 0.45);
-    background: ${(p) => p.theme.background.primary};
-  }
-`;
-
-const HeaderSpan = styled.span`
-  ${({ theme }) => theme.font.text.large}
 `;
 
 const CatalogNavBar = styled.div`
