@@ -21,3 +21,9 @@ export const Container = styled.div`
   margin: 0 20px;
   gap: 20px;
 `;
+
+export const ContainerTitle = styled.h2`
+  ${(p) => p.theme.font.caption.large}
+  margin: 0;
+  padding: 0;
+`;
