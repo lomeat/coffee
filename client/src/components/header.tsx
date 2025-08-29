@@ -33,12 +33,12 @@ const Wrapper = styled.div`
 const HeaderSearch = styled.input`
   border-radius: 15px;
   padding: 15px;
-  background: rgba(64, 40, 36, 0.05);
+  background: ${(p) => p.theme.background.button};
   border: 1px solid transparent;
   outline: none;
 
   &::placeholder {
-    color: rgba(64, 40, 36, 0.45);
+    color: ${(p) => p.theme.color.secondary};
   }
 
   &:focus {

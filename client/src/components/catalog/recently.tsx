@@ -1,5 +1,5 @@
+import { useAtomValue } from "jotai";
 import { Container, ContainerTitle } from "../../styles/shared";
-import { importImages } from "../../utils/importImages";
 import {
   CardContainer,
   CardImg,
@@ -8,24 +8,11 @@ import {
   CardRow,
   CardTitle,
 } from "./shared";
-
-type Card = {
-  id: number;
-  title: string;
-  price: number;
-  imageUrl?: string;
-};
-
-const coffeeImages = importImages("coffee");
-
-const cards: Card[] = coffeeImages.map((value, index) => ({
-  id: index,
-  title: `Wrong Tea ${index * 24}`,
-  price: 350 + index * 3,
-  imageUrl: value,
-}));
+import { coffeeAtom } from "../../store";
 
 export function CatalogRecently() {
+  const cards = useAtomValue(coffeeAtom);
+
   return (
     <Container>
       <ContainerTitle>недавнее</ContainerTitle>

@@ -24,6 +24,7 @@ export const Container = styled.div`
 
 export const ContainerTitle = styled.h2`
   ${(p) => p.theme.font.caption.large}
+  color: ${(p) => p.theme.color.primary};
   margin: 0;
   padding: 0;
 `;
