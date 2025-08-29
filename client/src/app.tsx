@@ -78,9 +78,36 @@ export function App() {
           ))}
         </CardGrid>
       </Container>
+
+      <Basket>
+        <Icon name="CartIcon" size={24} />
+        <span>515 ₽</span>
+      </Basket>
     </Wrapper>
   );
 }
+
+const Basket = styled.button`
+  ${(p) => p.theme.font.text.large}
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  border: 0;
+  border-radius: 15px;
+  padding: 15px 25px;
+  gap: 8px;
+  color: ${(p) => p.theme.color.button};
+  background: ${(p) => p.theme.background.accent};
+  display: flex;
+  z-index: 3;
+
+  svg,
+  path,
+  span {
+    color: inherit;
+    stroke: currentColor;
+  }
+`;
 
 const CardRow = styled.div`
   display: flex;
@@ -158,6 +185,7 @@ const Wrapper = styled.div`
   /* background: #f1f5fd; */
   background: #fffef8;
   gap: 20px;
+  padding-bottom: 40px;
 `;
 
 const Container = styled.div`

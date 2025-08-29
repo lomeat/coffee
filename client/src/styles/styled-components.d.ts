@@ -25,6 +25,7 @@ declare module "styled-components" {
       primary: string;
       secondary: string;
       accent: string;
+      button: string;
     };
   }
 }

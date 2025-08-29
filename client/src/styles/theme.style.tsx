@@ -61,5 +61,6 @@ export const theme: DefaultTheme = {
     primary: "rgba(64, 40, 36, 0.95)",
     secondary: "rgba(64, 40, 36, 0.45)",
     accent: "#2E3AC2",
+    button: "#ffffff",
   },
 };

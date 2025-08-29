@@ -4,3 +4,4 @@ export { default as SearchIcon } from "./Outline/Search.svg?react";
 export { default as TimeIcon } from "./Outline/Time.svg?react";
 export { default as CloudIcon } from "./Outline/cloud.svg?react";
 export { default as ArrowDownIcon } from "./Outline/Arrow-Down.svg?react";
+export { default as CartIcon } from "./Outline/Cart.svg?react";
