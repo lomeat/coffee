@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import { Icon } from "./icon";
 import { importImages } from "./utils/importImages";
+import { useState } from "react";
 
 type Card = {
   id: number;
@@ -21,6 +22,12 @@ const cards: Card[] = coffeeImages.map((value, index) => ({
 }));
 
 export function App() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  function toggleModal() {
+    setIsVisible((state) => !state);
+  }
+
   return (
     <Wrapper>
       <Header>
@@ -79,13 +86,48 @@ export function App() {
         </CardGrid>
       </Container>
 
-      <Basket>
+      <Basket onClick={toggleModal}>
         <Icon name="CartIcon" size={24} />
         <span>515 ₽</span>
       </Basket>
+
+      <ModalWrapper $isVisible={isVisible}>
+        <BasketWrapper>
+          <h2>Пiшов нахуй</h2>
+          <HeaderButton onClick={toggleModal}>
+            <Icon name="CrossIcon" />
+          </HeaderButton>
+        </BasketWrapper>
+      </ModalWrapper>
     </Wrapper>
   );
 }
+
+const BasketWrapper = styled.div`
+  background: white;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+
+  h2 {
+    ${(p) => p.theme.font.caption.large}
+  }
+`;
+
+const ModalWrapper = styled.div<{ $isVisible?: boolean }>`
+  display: ${(p) => (p.$isVisible ? "flex" : "none")};
+  padding-top: 60px;
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+`;
 
 const Basket = styled.button`
   ${(p) => p.theme.font.text.large}
