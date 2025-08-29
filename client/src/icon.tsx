@@ -14,12 +14,7 @@ export function Icon({ name, size, color }: IconProps) {
   const IconComponent = name ? icons[name] : DefaultIcon;
 
   return (
-    <IconComponent
-      width={size}
-      height={size}
-      fill={color || "#402824"}
-      color={color || "#402824"}
-    />
+    <IconComponent width={size} height={size} color={color || "#402824"} />
   );
 }
 

@@ -13,6 +13,7 @@ declare module "styled-components" {
       primary: string;
       secondary: string;
       accent: string;
+      button: string;
     };
     font: {
       title: Font;
@@ -22,6 +23,7 @@ declare module "styled-components" {
     };
     color: {
       primary: string;
+      secondary: string;
       accent: string;
     };
   }

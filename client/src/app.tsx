@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 import { Icon } from "./icon";
-import promoUrl from "./assets/Promo.png";
-import coffeeUrl from "./assets/coffee.png";
+import { importImages } from "./utils/importImages";
 
 type Card = {
   id: number;
@@ -11,11 +10,14 @@ type Card = {
   imageUrl?: string;
 };
 
-const cards: Card[] = Array.from({ length: 8 }, (_, index) => ({
+const coffeeImages = importImages("coffee");
+const promoImages = importImages("promo");
+
+const cards: Card[] = coffeeImages.map((value, index) => ({
   id: index,
-  title: `Coffee ${index + 1}`,
+  title: `Ice Coffee ${index + 1}`,
   price: 350 + index * 3,
-  imageUrl: coffeeUrl,
+  imageUrl: value,
 }));
 
 export function App() {
@@ -52,12 +54,18 @@ export function App() {
       </Container>
 
       <Container>
-        {/* <BlueTest /> */}
-        <img src={promoUrl} />
+        <img src={promoImages[0]} />
       </Container>
 
       <Container>
-        <ContainerTitle>каталог</ContainerTitle>
+        <CatalogNavBar>
+          <CatalogButton>все</CatalogButton>
+          <CatalogButton $isActive>новинки</CatalogButton>
+          <CatalogButton>сезонное</CatalogButton>
+          <CatalogButton>холодное</CatalogButton>
+          <CatalogButton>соленое</CatalogButton>
+          <CatalogButton>квадратное</CatalogButton>
+        </CatalogNavBar>
         <CardGrid>
           {cards.map((card) => (
             <CardContainer key={card.id}>
@@ -80,6 +88,12 @@ const CardRow = styled.div`
   overflow-x: auto; /* или scroll */
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const CardGrid = styled.div`
@@ -136,13 +150,6 @@ const CardPrice = styled.span<{ $isSmall?: boolean }>`
   border-radius: 30px;
   background: ${(p) => p.theme.background.primary};
 `;
-
-// const BlueTest = styled.div`
-//   width: 100%;
-//   height: 200px;
-//   background: ${({ theme }) => theme.background.secondary};
-//   border-radius: 15px;
-// `;
 
 const Wrapper = styled.div`
   display: flex;
@@ -218,4 +225,26 @@ const HeaderSearch = styled.input`
 
 const HeaderSpan = styled.span`
   ${({ theme }) => theme.font.text.large}
+`;
+
+const CatalogNavBar = styled.div`
+  display: flex;
+  gap: 20px;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const CatalogButton = styled.button<{ $isActive?: boolean }>`
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: ${({ theme, $isActive }) =>
+    $isActive ? theme.color.primary : theme.color.secondary};
+  ${({ theme }) => theme.font.caption.large};
 `;

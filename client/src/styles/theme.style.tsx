@@ -5,6 +5,7 @@ export const theme: DefaultTheme = {
     primary: "#fffef8",
     secondary: "#f1f5fd",
     accent: "#2E3AC2",
+    button: "rgba(64, 40, 36, 0.05)",
   },
 
   font: {
@@ -57,7 +58,8 @@ export const theme: DefaultTheme = {
   },
 
   color: {
-    primary: "#402824",
+    primary: "rgba(64, 40, 36, 0.95)",
+    secondary: "rgba(64, 40, 36, 0.45)",
     accent: "#2E3AC2",
   },
 };
