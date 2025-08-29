@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 import { Icon } from "./icon";
 import { importImages } from "./utils/importImages";
-import { useState } from "react";
+import { useContext, useState } from "react";
+
+import { ThemeContext } from "./styles/context";
 
 type Card = {
   id: number;
@@ -22,6 +24,8 @@ const cards: Card[] = coffeeImages.map((value, index) => ({
 }));
 
 export function App() {
+  const toggleTheme = useContext(ThemeContext);
+
   const [isVisible, setIsVisible] = useState(false);
 
   function toggleModal() {
@@ -38,7 +42,7 @@ export function App() {
             </HeaderButton>
             <HeaderSpan>Выбрать кофейню</HeaderSpan>
           </Flex>
-          <HeaderButton>
+          <HeaderButton onClick={toggleTheme}>
             <Icon name="ProfileIcon" />
           </HeaderButton>
         </Flex>
@@ -104,7 +108,7 @@ export function App() {
 }
 
 const BasketWrapper = styled.div`
-  background: white;
+  background: ${(p) => p.theme.background.primary};
   border-radius: 20px 20px 0 0;
   padding: 20px;
   display: flex;
@@ -224,8 +228,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* background: #f1f5fd; */
-  background: #fffef8;
+  background: ${(props) => props.theme.background.primary};
   gap: 20px;
   padding-bottom: 40px;
 `;

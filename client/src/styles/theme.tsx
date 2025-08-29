@@ -1,13 +1,6 @@
 import type { DefaultTheme } from "styled-components/dist/types";
 
-export const theme: DefaultTheme = {
-  background: {
-    primary: "#fffef8",
-    secondary: "#f1f5fd",
-    accent: "#2E3AC2",
-    button: "rgba(64, 40, 36, 0.05)",
-  },
-
+export const theme: Pick<DefaultTheme, "font"> = {
   font: {
     title: {
       fontWeight: 500,
@@ -55,12 +48,5 @@ export const theme: DefaultTheme = {
         lineHeight: "16px",
       },
     },
-  },
-
-  color: {
-    primary: "rgba(64, 40, 36, 0.95)",
-    secondary: "rgba(64, 40, 36, 0.45)",
-    accent: "#2E3AC2",
-    button: "#ffffff",
   },
 };

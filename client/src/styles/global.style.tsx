@@ -78,6 +78,7 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 400;
     color: #402824;
     box-sizing: border-box;
+    transition: all ease .2s;
   }
 
   h1, h2, h3, h4 {

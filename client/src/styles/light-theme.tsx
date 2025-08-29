@@ -1,0 +1,17 @@
+import type { DefaultTheme } from "styled-components/dist/types";
+
+export const theme: Omit<DefaultTheme, "font"> = {
+  background: {
+    primary: "#fffef8",
+    secondary: "#f1f5fd",
+    accent: "#2E3AC2",
+    button: "rgba(64, 40, 36, 0.05)",
+  },
+
+  color: {
+    primary: "rgba(64, 40, 36, 0.95)",
+    secondary: "rgba(64, 40, 36, 0.45)",
+    accent: "#2E3AC2",
+    button: "#ffffff",
+  },
+};
