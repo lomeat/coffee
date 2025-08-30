@@ -20,10 +20,10 @@ type Card = {
 
 const tags: Tag[] = [
   { id: 0, type: "all", title: "все" },
+  { id: 4, type: "new", title: "новинки" },
   { id: 1, type: "classic", title: "классика" },
   { id: 2, type: "cold", title: "холодные" },
   { id: 3, type: "hot", title: "горячие" },
-  { id: 4, type: "new", title: "новинки" },
 ];
 
 export const tagsAtom = atom(tags);

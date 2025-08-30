@@ -56,11 +56,9 @@ export const CardInfoContainer = styled.div`
 `;
 
 export const CardTitle = styled.span<{ $isSmall?: boolean }>`
-  ${(p) =>
-    p.$isSmall ? p.theme.font.caption.small : p.theme.font.caption.large}
+  ${(p) => (p.$isSmall ? p.theme.font.caption.small : p.theme.font.text.small)}
   color: ${(p) => p.theme.color.primary};
-  max-width: 90%;
-  overflow-wrap: break-word;
+  max-width: 100%;
 `;
 
 export const CardPrice = styled.span<{ $isSmall?: boolean }>`

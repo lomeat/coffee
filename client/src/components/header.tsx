@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { ThemeContext } from "../styles/context";
 import { Flex } from "../styles/shared";
 import { Icon } from "../icon";
+import { ChoosePlaceButton } from "./place-button";
 
 export function Header() {
   const toggleTheme = useContext(ThemeContext);
@@ -11,11 +12,11 @@ export function Header() {
   return (
     <Wrapper>
       <Flex $isSpace>
+        <ChoosePlaceButton />
         <Flex $gap={10}>
-          <Icon name="MapIcon" type="button" />
-          <HeaderSpan>Выбрать кофейню</HeaderSpan>
+          <Icon name="CloudIcon" type="button" onClick={toggleTheme} />
+          <Icon name="ProfileIcon" type="button" />
         </Flex>
-        <Icon name="ProfileIcon" type="button" onClick={toggleTheme} />
       </Flex>
       <HeaderSearch placeholder="найди свой напиток" />
     </Wrapper>
@@ -46,8 +47,4 @@ const HeaderSearch = styled.input`
     border: 1px solid rgba(64, 40, 36, 0.45);
     background: ${(p) => p.theme.background.primary};
   }
-`;
-
-const HeaderSpan = styled.span`
-  ${({ theme }) => theme.font.text.large}
 `;

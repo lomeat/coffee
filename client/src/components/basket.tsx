@@ -2,6 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { Icon } from "../icon";
+import { ChoosePlaceButton } from "./place-button";
+import { Flex } from "../styles/shared";
 
 export function Basket() {
   const [isVisible, setIsVisible] = useState(false);
@@ -19,8 +21,11 @@ export function Basket() {
 
       <ModalWrapper $isVisible={isVisible}>
         <BasketWrapper>
-          <h2>Пiшов нахуй</h2>
-          <Icon name="CrossIcon" type="button" onClick={toggleModal} />
+          <Flex $isSpace>
+            <h2 style={{ flex: "1 0 auto", textAlign: "center" }}>Корзина</h2>
+            <Icon name="CrossIcon" type="button" onClick={toggleModal} />
+          </Flex>
+          <ChoosePlaceButton isArrow />
         </BasketWrapper>
       </ModalWrapper>
     </>
@@ -32,9 +37,10 @@ const BasketWrapper = styled.div`
   border-radius: 20px 20px 0 0;
   padding: 20px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+  gap: 20px;
 
   h2 {
     ${(p) => p.theme.font.caption.large}
