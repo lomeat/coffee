@@ -59,6 +59,8 @@ export const CardTitle = styled.span<{ $isSmall?: boolean }>`
   ${(p) =>
     p.$isSmall ? p.theme.font.caption.small : p.theme.font.caption.large}
   color: ${(p) => p.theme.color.primary};
+  max-width: 90%;
+  overflow-wrap: break-word;
 `;
 
 export const CardPrice = styled.span<{ $isSmall?: boolean }>`
@@ -71,7 +73,7 @@ export const CardPrice = styled.span<{ $isSmall?: boolean }>`
 
 export const CatalogNavBar = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 6px;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;

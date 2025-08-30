@@ -10,20 +10,44 @@ import {
   CatalogButton,
   CatalogNavBar,
 } from "./shared";
-import { coffeeCardsAtom } from "../../atoms/coffee.atom";
+import {
+  coffeeCardsAtom,
+  tagsAtom,
+  type TagType,
+} from "../../atoms/coffee.atom";
+import { useState } from "react";
 
 export function Catalog() {
-  const cards = useAtomValue(coffeeCardsAtom);
+  const initCards = useAtomValue(coffeeCardsAtom);
+  const [category, setCategory] = useState("all");
+  const [cards, setCards] = useState(initCards);
+
+  function pickCategory(type: TagType) {
+    setCategory(type);
+    setCards(() => {
+      if (type === "all") {
+        return initCards;
+      }
+      return initCards.filter((card) =>
+        card.tags.map((t) => t.type).includes(type)
+      );
+    });
+  }
+
+  const tags = useAtomValue(tagsAtom);
 
   return (
     <Container>
       <CatalogNavBar>
-        <CatalogButton>все</CatalogButton>
-        <CatalogButton $isActive>новинки</CatalogButton>
-        <CatalogButton>сезонное</CatalogButton>
-        <CatalogButton>холодное</CatalogButton>
-        <CatalogButton>соленое</CatalogButton>
-        <CatalogButton>квадратное</CatalogButton>
+        {tags.map((tag) => (
+          <CatalogButton
+            key={tag.id}
+            $isActive={tag.type === category}
+            onClick={() => pickCategory(tag.type)}
+          >
+            {tag.title}
+          </CatalogButton>
+        ))}
       </CatalogNavBar>
       <CardGrid>
         {cards.map((card) => (

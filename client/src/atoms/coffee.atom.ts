@@ -1,8 +1,14 @@
 import { atom } from "jotai";
-import { importImages } from "../utils/importImages";
 import { ice, rist, blue, americano, caramel, matcha } from "../assets/coffee";
 
-type Tag = "classic" | "hot" | "new" | "cold";
+export type TagType = "classic" | "hot" | "new" | "cold" | "all";
+export type TagTitle = "классика" | "новинки" | "горячие" | "холодные" | "все";
+
+type Tag = {
+  id: number;
+  type: TagType;
+  title: TagTitle;
+};
 
 type Card = {
   id: number;
@@ -12,17 +18,19 @@ type Card = {
   tags: Tag[];
 };
 
-const coffeeImages = importImages("coffee");
+const tags: Tag[] = [
+  { id: 0, type: "all", title: "все" },
+  { id: 1, type: "classic", title: "классика" },
+  { id: 2, type: "cold", title: "холодные" },
+  { id: 3, type: "hot", title: "горячие" },
+  { id: 4, type: "new", title: "новинки" },
+];
 
-const oldCoffeeCards: Card[] = coffeeImages.map((value, index) => ({
-  id: index,
-  title: `Ice Coffee ${index + 1}`,
-  price: 350 + index * 3,
-  imageUrl: value,
-  tags: ["new", "cold"],
-}));
+export const tagsAtom = atom(tags);
 
-export const oldCoffeeCardsAtom = atom(oldCoffeeCards);
+function getTags(types: TagType[]): Tag[] {
+  return tags.filter((tag) => types.includes(tag.type));
+}
 
 const coffeeCards: Card[] = [
   {
@@ -30,54 +38,43 @@ const coffeeCards: Card[] = [
     title: "Айс Латте",
     price: 350,
     imageUrl: ice,
-    tags: ["cold"],
+    tags: getTags(["cold"]),
   },
   {
     id: 2,
     title: "Ристретто",
     price: 200,
     imageUrl: rist,
-    tags: ["new", "cold"],
+    tags: getTags(["cold", "new"]),
   },
   {
     id: 3,
     title: "Матча",
     price: 400,
     imageUrl: matcha,
-    tags: ["classic"],
+    tags: getTags(["classic"]),
   },
   {
     id: 4,
     title: "Блу Матча",
     price: 450,
     imageUrl: blue,
-    tags: ["new", "cold"],
+    tags: getTags(["cold", "new"]),
   },
   {
     id: 5,
     title: "Карамельная бомба",
     price: 320,
     imageUrl: caramel,
-    tags: ["hot", "new"],
+    tags: getTags(["hot", "new"]),
   },
   {
     id: 6,
     title: "Американо",
     price: 150,
     imageUrl: americano,
-    tags: ["classic", "hot"],
+    tags: getTags(["hot", "classic"]),
   },
 ];
 
 export const coffeeCardsAtom = atom(coffeeCards);
-
-export function getCoffeeCardsAtom(tag?: Tag) {
-  if (!tag) {
-    return coffeeCardsAtom;
-  }
-
-  return atom((get) => {
-    const cards = get(coffeeCardsAtom);
-    return cards.filter((card) => card.tags.includes(tag));
-  });
-}
