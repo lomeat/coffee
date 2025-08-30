@@ -3,55 +3,142 @@ import styled from "styled-components";
 
 import { Icon } from "../icon";
 import { ChoosePlaceButton } from "./place-button";
+import { useAtom, useAtomValue } from "jotai";
+import { cartAtom, totalCartAtom } from "../atoms/cart.atom";
 import { Flex } from "../styles/shared";
 
 export function Basket() {
   const [isVisible, setIsVisible] = useState(false);
+  const [cart, setCart] = useAtom(cartAtom);
+  const total = useAtomValue(totalCartAtom);
 
   function toggleModal() {
     setIsVisible((state) => !state);
+  }
+
+  function removeCoffee(id: number) {
+    setCart((state) => state.filter((a) => a.id !== id));
   }
 
   return (
     <>
       <BasketButton onClick={toggleModal}>
         <Icon name="CartIcon" size={24} />
-        <span>515 ₽</span>
+        <span>{total} ₽</span>
       </BasketButton>
 
       <ModalWrapper $isVisible={isVisible}>
         <BasketWrapper>
-          <Flex $isSpace>
-            <h2 style={{ flex: "1 0 auto", textAlign: "center" }}>Корзина</h2>
+          <Header>
+            <BasketTitle>Корзина</BasketTitle>
             <Icon name="CrossIcon" type="button" onClick={toggleModal} />
-          </Flex>
-          <ChoosePlaceButton isArrow />
+          </Header>
+
+          <div
+            style={{ gap: "20px", display: "flex", flexDirection: "column" }}
+          >
+            <ChoosePlaceButton isArrow />
+            <List>
+              {cart.map((coffee) => (
+                <Card key={coffee.id}>
+                  <Image style={{ width: "100px" }} src={coffee.imageUrl} />
+                  <Flex $isColumn>
+                    <Title>{coffee.title}</Title>
+                    <Title>{coffee.price} ₽</Title>
+                  </Flex>
+                  <DeleteButton onClick={() => removeCoffee(coffee.id)}>
+                    <Icon name="CrossIcon" />
+                  </DeleteButton>
+                </Card>
+              ))}
+            </List>
+          </div>
+          <div>
+            <Button>Оплатить {total} ₽</Button>
+          </div>
         </BasketWrapper>
       </ModalWrapper>
     </>
   );
 }
 
-const BasketWrapper = styled.div`
-  background: ${(p) => p.theme.background.primary};
-  border-radius: 20px 20px 0 0;
-  padding: 20px;
+const Card = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Image = styled.img`
+  width: 85px;
+  height: 100px;
+`;
+
+const Title = styled.span`
+  ${(p) => p.theme.font.text.medium};
+  color: ${(p) => p.theme.color.primary};
+`;
+
+const DeleteButton = styled.button`
+  border: 0;
+  background: ${(p) => p.theme.background.secondary};
+  padding: 10px;
+  border-radius: 10px;
+`;
+
+const List = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  gap: 10px;
+`;
+
+const Header = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  width: 100%;
+  background: ${(p) => p.theme.background.primary};
+`;
+
+const Button = styled.button`
+  border: 0;
+  ${(p) => p.theme.font.text.large}
+  color: ${(p) => p.theme.color.button};
+  background: ${(p) => p.theme.background.accent};
+  border-radius: 15px;
+  width: 100%;
+  padding: 15px;
+`;
+
+const BasketWrapper = styled.div`
+  background: ${(p) => p.theme.background.primary};
+  position: relative;
+  border-radius: 20px 20px 0 0;
+  padding: 70px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
   height: 100%;
   gap: 20px;
+  overflow-y: scroll;
+`;
 
-  h2 {
-    ${(p) => p.theme.font.caption.large}
-  }
+const BasketTitle = styled.h2`
+  ${(p) => p.theme.font.text.large}
+  text-align: center;
+  width: 100%;
 `;
 
 const ModalWrapper = styled.div<{ $isVisible?: boolean }>`
   display: ${(p) => (p.$isVisible ? "flex" : "none")};
   padding-top: 60px;
   background: rgba(0, 0, 0, 0.5);
-  position: absolute;
+  position: fixed;
   z-index: 100;
   top: 0px;
   left: 0px;

@@ -10,34 +10,23 @@ type Props = {
 export function ChoosePlaceButton({ onClick, isArrow }: Props) {
   if (isArrow) {
     return (
-      <ButtonNoStyles onClick={onClick}>
-        <Flex $isSpace>
-          <Flex $gap={10}>
-            <Icon name="MapIcon" />
-            <HeaderSpan>Выбрать кофейню</HeaderSpan>
-          </Flex>
-          <Icon name="ArrowDownIcon" rotate={-90} />
+      <Flex $isSpace onClick={onClick}>
+        <Flex $gap={10}>
+          <Icon name="MapIcon" />
+          <HeaderSpan>Выбрать кофейню</HeaderSpan>
         </Flex>
-      </ButtonNoStyles>
+        <Icon name="ArrowDownIcon" rotate={-90} />
+      </Flex>
     );
   }
 
   return (
-    <ButtonNoStyles onClick={onClick}>
-      <Flex $gap={10}>
-        <Icon name="MapIcon" type="button" />
-        <HeaderSpan>Выбрать кофейню</HeaderSpan>
-      </Flex>
-    </ButtonNoStyles>
+    <Flex $gap={10} onClick={onClick}>
+      <Icon name="MapIcon" type="button" />
+      <HeaderSpan>Выбрать кофейню</HeaderSpan>
+    </Flex>
   );
 }
-
-const ButtonNoStyles = styled.button`
-  padding: 0;
-  margin: 0;
-  background: transparent;
-  border: 0;
-`;
 
 const HeaderSpan = styled.span`
   ${({ theme }) => theme.font.text.large}

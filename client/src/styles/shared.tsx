@@ -5,6 +5,7 @@ export const Flex = styled.div<{
   $isColumn?: boolean;
   $gap?: number;
   $padding?: number;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }>`
   display: flex;
   justify-content: ${({ $isSpace }) =>

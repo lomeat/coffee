@@ -4,13 +4,13 @@ import { ice, rist, blue, americano, caramel, matcha } from "../assets/coffee";
 export type TagType = "classic" | "hot" | "new" | "cold" | "all";
 export type TagTitle = "классика" | "новинки" | "горячие" | "холодные" | "все";
 
-type Tag = {
+export type Tag = {
   id: number;
   type: TagType;
   title: TagTitle;
 };
 
-type Card = {
+export type Card = {
   id: number;
   title: string;
   price: number;

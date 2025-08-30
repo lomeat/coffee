@@ -14,6 +14,7 @@ declare module "styled-components" {
       secondary: string;
       accent: string;
       button: string;
+      disabled: string;
     };
     font: {
       title: Font;
