@@ -7,6 +7,7 @@ import { Basket } from "./components/basket";
 import { Container } from "./styles/shared";
 import { CatalogRecently } from "./components/catalog/recently";
 import { Catalog } from "./components/catalog/common";
+import { DescriptionCard } from "./components/description";
 
 const promoImages = importImages("promo");
 
@@ -22,6 +23,7 @@ export function App() {
 
       <Catalog />
       <Basket />
+      <DescriptionCard />
     </Wrapper>
   );
 }

@@ -20,12 +20,14 @@ import {
   type TagType,
 } from "../../atoms/coffee.atom";
 import { cartAtom } from "../../atoms/cart.atom";
+import { descriptionModalAtom } from "../../atoms/modal";
 
 export function Catalog() {
   const initCards = useAtomValue(coffeeCardsAtom);
   const [category, setCategory] = useState("all");
   const [cards, setCards] = useState(initCards);
   const setCart = useSetAtom(cartAtom);
+  const setDesc = useSetAtom(descriptionModalAtom);
 
   function pickCategory(type: TagType) {
     setCategory(type);
@@ -37,6 +39,10 @@ export function Catalog() {
         card.tags.map((t) => t.type).includes(type)
       );
     });
+  }
+
+  function toggleDescModal(card: Card) {
+    setDesc((state) => ({ isVisible: !state.isVisible, card }));
   }
 
   function addCoffee(card: Card) {
@@ -65,7 +71,7 @@ export function Catalog() {
         {cards.map((card) => (
           <CardContainer key={card.id}>
             <CardClickable>
-              <OpenButton />
+              <OpenButton onClick={() => toggleDescModal(card)} />
               <BuyButton onClick={() => addCoffee(card)} />
             </CardClickable>
             <CardInfoContainer>
