@@ -10,10 +10,10 @@ import {
   CatalogButton,
   CatalogNavBar,
 } from "./shared";
-import { coffeeAtom } from "../../store";
+import { coffeeCardsAtom } from "../../atoms/coffee.atom";
 
 export function Catalog() {
-  const cards = useAtomValue(coffeeAtom);
+  const cards = useAtomValue(coffeeCardsAtom);
 
   return (
     <Container>
