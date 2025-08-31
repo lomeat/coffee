@@ -25,6 +25,7 @@ export function Basket() {
   // и починить кнопку чтобы внизу всегда была
   function pay() {
     setCart([]);
+    toggleModal();
   }
 
   return (
