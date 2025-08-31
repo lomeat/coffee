@@ -2,18 +2,17 @@ import styled from "styled-components";
 
 import { Icon } from "../icon";
 
-import { useAtom, useSetAtom } from "jotai";
-import { descriptionModalAtom } from "../atoms/modal";
-import type { Card } from "../atoms/coffee.atom";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { descriptionModalAtom } from "../atoms/modal.atom";
+import {
+  actualPriceAtom,
+  sizes,
+  type Card,
+  type Size,
+} from "../atoms/coffee.atom";
 import { cartAtom } from "../atoms/cart.atom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ContainerTitle } from "../styles/shared";
-
-const buttons = [
-  { title: "S", amount: "250 ml" },
-  { title: "M", amount: "350 ml" },
-  { title: "L", amount: "500 ml" },
-];
 
 const details = [
   { title: "Энергия", amount: "250 ккал" },
@@ -62,7 +61,15 @@ const options = [
 export function DescriptionCard() {
   const [desc, setDesc] = useAtom(descriptionModalAtom);
   const setCart = useSetAtom(cartAtom);
-  const [size, setSize] = useState("S");
+  const [size, setSize] = useState<Size>(sizes[0]);
+  const actualPrice = useAtomValue(actualPriceAtom);
+  const [price, setPrice] = useState<number>(Number(desc.card?.price));
+
+  const initPrice = Number(desc.card?.price);
+
+  useEffect(() => {
+    setPrice(initPrice + size.price);
+  }, [initPrice, size]);
 
   function addCoffee(card: Card) {
     setCart((state) => [
@@ -70,8 +77,22 @@ export function DescriptionCard() {
       { ...card, id: state.length ? state[state.length - 1].id + 1 : 1 },
     ]);
   }
+
   function toggleModal() {
     setDesc((state) => ({ ...state, isVisible: !state.isVisible }));
+  }
+
+  function changeSize(newSize: Size) {
+    setSize(newSize);
+    setDesc((desc) => ({
+      ...desc,
+      card: desc.card ? { ...desc.card, size } : desc.card,
+    }));
+  }
+
+  if (!desc.card) {
+    console.error("NO DESC CARD");
+    return null;
   }
 
   return (
@@ -82,25 +103,24 @@ export function DescriptionCard() {
           <Icon name="CrossIcon" type="button" onClick={toggleModal} />
         </Header>
         <Gradient>
-          <Text>
-            Холодный напиток на основе премиального японского чая матча идеально
-            подойдет для жаркого летнего дня!
-          </Text>
+          {!!desc.card?.desc && <Text>{desc.card?.desc}</Text>}
         </Gradient>
-        <Container style={{ paddingTop: 20 }}>
-          <SizeWrapper>
-            {buttons.map((button) => (
-              <SizeButton
-                key={button.title}
-                onClick={() => setSize(button.title)}
-                $isActive={size === button.title}
-              >
-                <h3>{button.title}</h3>
-                <span>{button.amount}</span>
-              </SizeButton>
-            ))}
-          </SizeWrapper>
-        </Container>
+        {!!desc.card && (
+          <Container style={{ paddingTop: 20 }}>
+            <SizeWrapper>
+              {sizes.map((button) => (
+                <SizeButton
+                  key={button.title}
+                  onClick={() => changeSize(button)}
+                  $isActive={size.title === button.title}
+                >
+                  <h3>{button.title}</h3>
+                  <span>{button.amount} мл</span>
+                </SizeButton>
+              ))}
+            </SizeWrapper>
+          </Container>
+        )}
         <Container>
           <OptionsWrapper>
             {options.map((option) => (
@@ -126,8 +146,8 @@ export function DescriptionCard() {
         <Container>
           <ContainerTitle>состав</ContainerTitle>
           <Text>
-            Кокосовая основа, вода питьевая, матча (зеленый чай) лед, взбитые
-            сливки, печенье, может содержать картофельное пюре, баклажан
+            Кофейная основа (3 в 1), вода питьевая, лед, взбитые сливки,
+            печенье, может содержать картофельное пюре, баклажан
           </Text>
         </Container>
         <Container>
@@ -142,9 +162,11 @@ export function DescriptionCard() {
         </Container>
         <Container>
           <Button
-            onClick={() => (desc.card ? addCoffee(desc.card) : undefined)}
+            onClick={() =>
+              desc.card ? addCoffee({ ...desc.card, price: price }) : undefined
+            }
           >
-            Купить {desc.card?.price} ₽
+            Купить {price} ₽
           </Button>
         </Container>
       </Wrapper>

@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { ice, rist, blue, americano, caramel, matcha } from "../assets/coffee";
-import { descriptionModalAtom } from "./modal";
+import { descriptionModalAtom } from "./modal.atom";
 
 // --- Types ---
 
@@ -17,7 +17,6 @@ export type Size = {
   title: string;
   amount: number;
   price: number;
-  isActive: boolean;
 };
 
 export type Card = {
@@ -28,8 +27,18 @@ export type Card = {
   tags: Tag[];
   options: Option[];
   desc?: string;
-  sizes: Size[];
+  size: Size;
   details: Detail[];
+};
+
+type Variant2 = {
+  title: string;
+  price: number;
+};
+
+type Option2 = {
+  title: string;
+  price: number;
 };
 
 type Variant = {
@@ -50,14 +59,14 @@ export type Detail = {
 
 // --- Mocks ---
 
-const details: Detail[] = [
+export const details: Detail[] = [
   { title: "Калории", amount: 250 },
   { title: "Белки", amount: 10.1 },
   { title: "Жиры", amount: 12.5 },
   { title: "Углеводы", amount: 20 },
 ];
 
-const options: Option[] = [
+export const options: Option[] = [
   {
     title: "сахар",
     variants: [
@@ -94,10 +103,10 @@ const tags: Tag[] = [
   { id: 3, type: "hot", title: "горячие" },
 ];
 
-const sizes: Size[] = [
-  { title: "S", amount: 250, price: 0, isActive: true },
-  { title: "M", amount: 350, price: 100, isActive: true },
-  { title: "L", amount: 500, price: 150, isActive: true },
+export const sizes: Size[] = [
+  { title: "S", amount: 250, price: 0 },
+  { title: "M", amount: 350, price: 100 },
+  { title: "L", amount: 500, price: 150 },
 ];
 
 const coffeeCards: Card[] = [
@@ -109,7 +118,7 @@ const coffeeCards: Card[] = [
     tags: getTags(["cold"]),
     options,
     desc: "Просто латте. Но холодное",
-    sizes,
+    size: { title: "S", amount: 250, price: 0 },
     details,
   },
   {
@@ -120,7 +129,7 @@ const coffeeCards: Card[] = [
     tags: getTags(["cold", "new"]),
     options,
     desc: "Какаято-то итальянская модная хрень. Но твоей даме нравится.",
-    sizes,
+    size: { title: "S", amount: 250, price: 0 },
     details,
   },
   {
@@ -132,7 +141,7 @@ const coffeeCards: Card[] = [
     options,
     desc: "Кокосовая основа, вода питьевая, матча (зеленый чай) лед, взбитые сливки, печенье, может содержать картофельное пюре, баклажан",
     details,
-    sizes,
+    size: { title: "S", amount: 250, price: 0 },
   },
   {
     id: 4,
@@ -143,7 +152,7 @@ const coffeeCards: Card[] = [
     options,
     desc: "Просто матча. Но голубая луна.",
     details,
-    sizes,
+    size: { title: "S", amount: 250, price: 0 },
   },
   {
     id: 5,
@@ -154,7 +163,7 @@ const coffeeCards: Card[] = [
     options,
     desc: "Просто бомба. Пушка бомба",
     details,
-    sizes,
+    size: { title: "S", amount: 250, price: 0 },
   },
   {
     id: 6,
@@ -164,7 +173,7 @@ const coffeeCards: Card[] = [
     tags: getTags(["hot", "classic"]),
     options,
     desc: "Do you speak english?",
-    sizes,
+    size: { title: "S", amount: 250, price: 0 },
     details,
   },
 ];
@@ -197,7 +206,7 @@ export const actualPriceAtom = atom((get) => {
     .flat()
     .reduce((prev, curr) => prev + curr, 0);
 
-  const sizePrice = card.sizes.filter((s) => s.isActive)[0].price;
+  const sizePrice = card.size.price;
 
   const result = basePrice + optionsPrice + sizePrice;
   return result;

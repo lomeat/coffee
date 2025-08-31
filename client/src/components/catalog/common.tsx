@@ -20,7 +20,7 @@ import {
   type TagType,
 } from "../../atoms/coffee.atom";
 import { cartAtom } from "../../atoms/cart.atom";
-import { descriptionModalAtom } from "../../atoms/modal";
+import { descriptionModalAtom } from "../../atoms/modal.atom";
 
 export function Catalog() {
   const initCards = useAtomValue(coffeeCardsAtom);
