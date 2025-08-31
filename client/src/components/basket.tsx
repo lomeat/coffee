@@ -21,13 +21,21 @@ export function Basket() {
     setCart((state) => state.filter((a) => a.id !== id));
   }
 
+  // Сделать нормально, чтобы все падало в recently
+  // и починить кнопку чтобы внизу всегда была
+  function pay() {
+    setCart([]);
+  }
+
   return (
     <>
-      <BasketButton onClick={toggleModal}>
-        {!!count && <Badge>{count}</Badge>}
-        <Icon name="CartIcon" size={24} />
-        <span>{total} ₽</span>
-      </BasketButton>
+      {!!cart.length && (
+        <BasketButton onClick={toggleModal}>
+          {!!count && <Badge>{count}</Badge>}
+          <Icon name="CartIcon" size={24} />
+          <span>{total} ₽</span>
+        </BasketButton>
+      )}
 
       <ModalWrapper $isVisible={isVisible}>
         <BasketWrapper>
@@ -56,7 +64,7 @@ export function Basket() {
             </Container>
           </ScrollContainer>
           <Container>
-            <Button>Оплатить {total} ₽</Button>
+            <Button onClick={pay}>Оплатить {total} ₽</Button>
           </Container>
         </BasketWrapper>
       </ModalWrapper>
@@ -123,6 +131,8 @@ const Button = styled.button`
   border-radius: 15px;
   width: 100%;
   padding: 15px;
+  justify-self: flex-end;
+  align-self: flex-end;
 
   &:active {
     background: #000;
@@ -135,10 +145,7 @@ const BasketWrapper = styled.div`
   border-radius: 20px 20px 0 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   width: 100%;
-  height: 100%;
-  overflow-y: scroll;
 `;
 
 const BasketTitle = styled.h2`
