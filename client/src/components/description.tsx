@@ -2,54 +2,18 @@ import styled from "styled-components";
 
 import { Icon } from "../icon";
 
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { descriptionModalAtom } from "../atoms/modal.atom";
 import {
-  actualPriceAtom,
+  options,
   sizes,
   type Card,
+  type MockVariant,
   type Size,
 } from "../atoms/coffee.atom";
 import { cartAtom } from "../atoms/cart.atom";
 import { useEffect, useState } from "react";
 import { ContainerTitle } from "../styles/shared";
-
-const options = [
-  {
-    title: "сахар",
-    children: [
-      {
-        title: "без сахара",
-        isActive: false,
-      },
-      {
-        title: "с сахаром",
-        isActive: true,
-      },
-      {
-        title: "бамбуковый",
-        isActive: false,
-      },
-    ],
-  },
-  {
-    title: "молоко",
-    children: [
-      {
-        title: "обычное",
-        isActive: true,
-      },
-      {
-        title: "необычное",
-        isActive: false,
-      },
-      {
-        title: "с блестками",
-        isActive: false,
-      },
-    ],
-  },
-];
 
 export function DescriptionCard() {
   const [desc, setDesc] = useAtom(descriptionModalAtom);
@@ -60,8 +24,11 @@ export function DescriptionCard() {
   const initPrice = Number(desc.card?.price);
 
   useEffect(() => {
-    setPrice(initPrice + size.price);
-  }, [initPrice, size]);
+    const optionsPrice = desc.card?.options
+      .map((opt) => opt.price)
+      .reduce((a, b) => a + b, 0);
+    setPrice(initPrice + size.price + Number(optionsPrice));
+  }, [initPrice, size, desc.card]);
 
   function addCoffee(card: Card) {
     setCart((state) => [
@@ -79,6 +46,27 @@ export function DescriptionCard() {
     setDesc((desc) => ({
       ...desc,
       card: desc.card ? { ...desc.card, size } : desc.card,
+    }));
+  }
+
+  function changeOption(optTitle: string, item: MockVariant) {
+    setDesc((desc) => ({
+      ...desc,
+      card: desc.card
+        ? {
+            ...desc.card,
+            options: [
+              ...desc.card.options.filter((opt) => opt.title !== optTitle),
+              ...desc.card.options
+                .filter((opt) => opt.title === optTitle)
+                .map(() => ({
+                  title: optTitle,
+                  subtitle: item.title,
+                  price: item.price,
+                })),
+            ],
+          }
+        : desc.card,
     }));
   }
 
@@ -119,14 +107,19 @@ export function DescriptionCard() {
               <Option>
                 <ContainerTitle>{option.title}</ContainerTitle>
                 <OptsWrapper>
-                  {option.children.map((opt) => (
-                    <Opt htmlFor={opt.title}>
-                      <span>{opt.title}</span>
+                  {option.items.map((item) => (
+                    <Opt htmlFor={item.title}>
+                      <span>
+                        {item.title} ({item.price} ₽)
+                      </span>
                       <input
                         type="radio"
-                        checked={opt.isActive}
-                        id={opt.title}
-                        name={opt.title}
+                        checked={desc.card?.options
+                          .map((o) => o.subtitle)
+                          .includes(item.title)}
+                        onChange={() => changeOption(option.title, item)}
+                        id={item.title}
+                        name={item.title}
                       />
                     </Opt>
                   ))}

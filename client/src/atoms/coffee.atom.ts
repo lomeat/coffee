@@ -31,25 +31,20 @@ export type Card = {
   details: Detail[];
 };
 
-type Variant2 = {
-  title: string;
-  price: number;
-};
-
-type Option2 = {
-  title: string;
-  price: number;
-};
-
-type Variant = {
-  title: string;
-  price: number;
-  isActive: boolean;
-};
-
 export type Option = {
   title: string;
-  variants: Variant[];
+  subtitle: string;
+  price: number;
+};
+
+export type MockVariant = {
+  title: string;
+  price: number;
+};
+
+export type MockOption = {
+  title: string;
+  items: MockVariant[];
 };
 
 export type Detail = {
@@ -66,31 +61,31 @@ export const details: Detail[] = [
   { title: "Углеводы", amount: 20 },
 ];
 
-export const options: Option[] = [
+export const options: MockOption[] = [
   {
     title: "сахар",
-    variants: [
-      { title: "без сахара", price: 0, isActive: false },
-      { title: "с сахаром", price: 0, isActive: true },
-      { title: "бамбуковый", price: 0, isActive: false },
+    items: [
+      { title: "без сахара", price: 0 },
+      { title: "с сахаром", price: 0 },
+      { title: "бамбуковый", price: 0 },
     ],
   },
   {
     title: "молоко",
-    variants: [
-      { title: "без молока", price: 0, isActive: false },
-      { title: "обычное", price: 0, isActive: true },
-      { title: "необычное", price: 100, isActive: false },
-      { title: "с блестками", price: 199, isActive: false },
+    items: [
+      { title: "без молока", price: 0 },
+      { title: "обычное", price: 0 },
+      { title: "необычное", price: 100 },
+      { title: "с блестками", price: 199 },
     ],
   },
   {
-    title: "топпинги",
-    variants: [
-      { title: "без топпинга", price: 0, isActive: true },
-      { title: "соленая карамель", price: 200, isActive: false },
-      { title: "пряный огурец", price: 50, isActive: false },
-      { title: "протухший сыр", price: 999, isActive: false },
+    title: "топпинг",
+    items: [
+      { title: "без топпинга", price: 0 },
+      { title: "соленая карамель", price: 200 },
+      { title: "пряный огурец", price: 50 },
+      { title: "протухший сыр", price: 999 },
     ],
   },
 ];
@@ -116,7 +111,11 @@ const coffeeCards: Card[] = [
     price: 350,
     imageUrl: ice,
     tags: getTags(["cold"]),
-    options,
+    options: [
+      { title: "сахар", subtitle: "с сахаром", price: 0 },
+      { title: "молоко", subtitle: "обычное", price: 0 },
+      { title: "топпинг", subtitle: "без топпинга", price: 0 },
+    ],
     desc: "Просто латте. Но холодное",
     size: { title: "S", amount: 250, price: 0 },
     details,
@@ -127,7 +126,11 @@ const coffeeCards: Card[] = [
     price: 200,
     imageUrl: rist,
     tags: getTags(["cold", "new"]),
-    options,
+    options: [
+      { title: "сахар", subtitle: "с сахаром", price: 0 },
+      { title: "молоко", subtitle: "обычное", price: 0 },
+      { title: "топпинг", subtitle: "без топпинга", price: 0 },
+    ],
     desc: "Какаято-то итальянская модная хрень. Но твоей даме нравится.",
     size: { title: "S", amount: 250, price: 0 },
     details,
@@ -138,7 +141,11 @@ const coffeeCards: Card[] = [
     price: 400,
     imageUrl: matcha,
     tags: getTags(["classic"]),
-    options,
+    options: [
+      { title: "сахар", subtitle: "с сахаром", price: 0 },
+      { title: "молоко", subtitle: "обычное", price: 0 },
+      { title: "топпинг", subtitle: "без топпинга", price: 0 },
+    ],
     desc: "Кокосовая основа, вода питьевая, матча (зеленый чай) лед, взбитые сливки, печенье, может содержать картофельное пюре, баклажан",
     details,
     size: { title: "S", amount: 250, price: 0 },
@@ -149,7 +156,11 @@ const coffeeCards: Card[] = [
     price: 450,
     imageUrl: blue,
     tags: getTags(["cold", "new"]),
-    options,
+    options: [
+      { title: "сахар", subtitle: "с сахаром", price: 0 },
+      { title: "молоко", subtitle: "обычное", price: 0 },
+      { title: "топпинг", subtitle: "без топпинга", price: 0 },
+    ],
     desc: "Просто матча. Но голубая луна.",
     details,
     size: { title: "S", amount: 250, price: 0 },
@@ -160,7 +171,11 @@ const coffeeCards: Card[] = [
     price: 320,
     imageUrl: caramel,
     tags: getTags(["hot", "new"]),
-    options,
+    options: [
+      { title: "сахар", subtitle: "с сахаром", price: 0 },
+      { title: "молоко", subtitle: "обычное", price: 0 },
+      { title: "топпинг", subtitle: "без топпинга", price: 0 },
+    ],
     desc: "Просто бомба. Пушка бомба",
     details,
     size: { title: "S", amount: 250, price: 0 },
@@ -171,7 +186,11 @@ const coffeeCards: Card[] = [
     price: 150,
     imageUrl: americano,
     tags: getTags(["hot", "classic"]),
-    options,
+    options: [
+      { title: "сахар", subtitle: "с сахаром", price: 0 },
+      { title: "молоко", subtitle: "обычное", price: 0 },
+      { title: "топпинг", subtitle: "без топпинга", price: 0 },
+    ],
     desc: "Do you speak english?",
     size: { title: "S", amount: 250, price: 0 },
     details,
@@ -188,26 +207,26 @@ function getTags(types: TagType[]): Tag[] {
 
 export const coffeeCardsAtom = atom(coffeeCards);
 
-export const actualPriceAtom = atom((get) => {
-  const { card } = get(descriptionModalAtom);
+// export const actualPriceAtom = atom((get) => {
+//   const { card } = get(descriptionModalAtom);
 
-  if (!card) {
-    return 0;
-  }
+//   if (!card) {
+//     return 0;
+//   }
 
-  const basePrice = card.price;
+//   const basePrice = card.price;
 
-  const optionsPrice = options
-    .map((option) =>
-      option.variants
-        .filter((variant) => variant.isActive)
-        .map((variant) => variant.price)
-    )
-    .flat()
-    .reduce((prev, curr) => prev + curr, 0);
+//   const optionsPrice = options
+//     .map((option) =>
+//       option.variants
+//         .filter((variant) => variant.isActive)
+//         .map((variant) => variant.price)
+//     )
+//     .flat()
+//     .reduce((prev, curr) => prev + curr, 0);
 
-  const sizePrice = card.size.price;
+//   const sizePrice = card.size.price;
 
-  const result = basePrice + optionsPrice + sizePrice;
-  return result;
-});
+//   const result = basePrice + optionsPrice + sizePrice;
+//   return result;
+// });
