@@ -35,12 +35,12 @@ export function Basket() {
             <BasketTitle>Корзина</BasketTitle>
             <Icon name="CrossIcon" type="button" onClick={toggleModal} />
           </Header>
-
-          <div
-            style={{ gap: "20px", display: "flex", flexDirection: "column" }}
-          >
+          <Container>
             <ChoosePlaceButton isArrow />
-            <List>
+          </Container>
+
+          <ScrollContainer>
+            <Container>
               {cart.map((coffee) => (
                 <Card key={coffee.id}>
                   <Image style={{ width: "100px" }} src={coffee.imageUrl} />
@@ -53,11 +53,11 @@ export function Basket() {
                   </DeleteButton>
                 </Card>
               ))}
-            </List>
-          </div>
-          <div>
+            </Container>
+          </ScrollContainer>
+          <Container>
             <Button>Оплатить {total} ₽</Button>
-          </div>
+          </Container>
         </BasketWrapper>
       </ModalWrapper>
     </>
@@ -87,20 +87,29 @@ const DeleteButton = styled.button`
   border-radius: 10px;
 `;
 
-const List = styled.div`
+const ScrollContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+`;
+
+const Container = styled.div`
   width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  background: ${(p) => p.theme.background.primary};
+
+  &:last-child {
+    padding-bottom: 20px;
+  }
 `;
 
 const Header = styled.div`
-  position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  top: 0;
-  left: 0;
   padding: 10px;
   width: 100%;
   background: ${(p) => p.theme.background.primary};
@@ -124,13 +133,11 @@ const BasketWrapper = styled.div`
   background: ${(p) => p.theme.background.primary};
   position: relative;
   border-radius: 20px 20px 0 0;
-  padding: 70px 20px 20px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  gap: 20px;
   overflow-y: scroll;
 `;
 
