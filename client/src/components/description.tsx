@@ -35,10 +35,13 @@ export function DescriptionCard() {
       ...state,
       { ...card, id: state.length ? state[state.length - 1].id + 1 : 1 },
     ]);
+    setTimeout(() => {
+      closeModal();
+    }, 200);
   }
 
-  function toggleModal() {
-    setDesc((state) => ({ ...state, isVisible: !state.isVisible }));
+  function closeModal() {
+    setDesc({ isVisible: false, card: null });
   }
 
   function changeSize(newSize: Size) {
@@ -71,7 +74,6 @@ export function DescriptionCard() {
   }
 
   if (!desc.card) {
-    console.error("NO DESC CARD");
     return null;
   }
 
@@ -80,7 +82,7 @@ export function DescriptionCard() {
       <Wrapper $src={desc.card?.imageUrl}>
         <Header>
           <Title>{desc.card?.title}</Title>
-          <Icon name="CrossIcon" type="button" onClick={toggleModal} />
+          <Icon name="CrossIcon" type="button" onClick={closeModal} />
         </Header>
         <ScrollContainer>
           <Gradient>
@@ -290,6 +292,10 @@ const Button = styled.button`
   border-radius: 15px;
   width: 100%;
   padding: 15px;
+
+  &:active {
+    background: #000;
+  }
 `;
 
 const Wrapper = styled.div<{ $src?: string }>`

@@ -114,6 +114,10 @@ const Button = styled.button`
   border-radius: 15px;
   width: 100%;
   padding: 15px;
+
+  &:active {
+    background: #000;
+  }
 `;
 
 const BasketWrapper = styled.div`
