@@ -1,6 +1,5 @@
 import { atom } from "jotai";
 import { ice, rist, blue, americano, caramel, matcha } from "../assets/coffee";
-import { descriptionModalAtom } from "./modal.atom";
 
 // --- Types ---
 
@@ -206,27 +205,3 @@ function getTags(types: TagType[]): Tag[] {
 }
 
 export const coffeeCardsAtom = atom(coffeeCards);
-
-// export const actualPriceAtom = atom((get) => {
-//   const { card } = get(descriptionModalAtom);
-
-//   if (!card) {
-//     return 0;
-//   }
-
-//   const basePrice = card.price;
-
-//   const optionsPrice = options
-//     .map((option) =>
-//       option.variants
-//         .filter((variant) => variant.isActive)
-//         .map((variant) => variant.price)
-//     )
-//     .flat()
-//     .reduce((prev, curr) => prev + curr, 0);
-
-//   const sizePrice = card.size.price;
-
-//   const result = basePrice + optionsPrice + sizePrice;
-//   return result;
-// });

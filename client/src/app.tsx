@@ -34,5 +34,5 @@ const Wrapper = styled.div`
   justify-content: center;
   background: ${(props) => props.theme.background.primary};
   gap: 20px;
-  padding-bottom: 40px;
+  padding-bottom: 100px;
 `;

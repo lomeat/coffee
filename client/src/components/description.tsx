@@ -82,69 +82,71 @@ export function DescriptionCard() {
           <Title>{desc.card?.title}</Title>
           <Icon name="CrossIcon" type="button" onClick={toggleModal} />
         </Header>
-        <Gradient>
-          {!!desc.card?.desc && <Text>{desc.card?.desc}</Text>}
-        </Gradient>
-        {!!desc.card && (
-          <Container style={{ paddingTop: 20 }}>
+        <ScrollContainer>
+          <Gradient>
+            {!!desc.card?.desc && <Text>{desc.card?.desc}</Text>}
+          </Gradient>
+          {!!desc.card && (
+            <Container style={{ paddingTop: 20 }}>
+              <SizeWrapper>
+                {sizes.map((button) => (
+                  <SizeButton
+                    key={button.title}
+                    onClick={() => changeSize(button)}
+                    $isActive={size.title === button.title}
+                  >
+                    <h3>{button.title}</h3>
+                    <span>{button.amount} мл</span>
+                  </SizeButton>
+                ))}
+              </SizeWrapper>
+            </Container>
+          )}
+          <Container>
+            <OptionsWrapper>
+              {options.map((option) => (
+                <Option>
+                  <ContainerTitle>{option.title}</ContainerTitle>
+                  <OptsWrapper>
+                    {option.items.map((item) => (
+                      <Opt htmlFor={item.title}>
+                        <span>
+                          {item.title} ({item.price} ₽)
+                        </span>
+                        <input
+                          type="radio"
+                          checked={desc.card?.options
+                            .map((o) => o.subtitle)
+                            .includes(item.title)}
+                          onChange={() => changeOption(option.title, item)}
+                          id={item.title}
+                          name={item.title}
+                        />
+                      </Opt>
+                    ))}
+                  </OptsWrapper>
+                </Option>
+              ))}
+            </OptionsWrapper>
+          </Container>
+          <Container>
+            <ContainerTitle>состав</ContainerTitle>
+            <Text>
+              Кофейная основа (3 в 1), вода питьевая, лед, взбитые сливки,
+              печенье, может содержать картофельное пюре, баклажан
+            </Text>
+          </Container>
+          <Container>
             <SizeWrapper>
-              {sizes.map((button) => (
-                <SizeButton
-                  key={button.title}
-                  onClick={() => changeSize(button)}
-                  $isActive={size.title === button.title}
-                >
-                  <h3>{button.title}</h3>
-                  <span>{button.amount} мл</span>
+              {desc.card.details.map((detail) => (
+                <SizeButton disabled $isSmall>
+                  <span>{detail.title}</span>
+                  <h3>{detail.amount}</h3>
                 </SizeButton>
               ))}
             </SizeWrapper>
           </Container>
-        )}
-        <Container>
-          <OptionsWrapper>
-            {options.map((option) => (
-              <Option>
-                <ContainerTitle>{option.title}</ContainerTitle>
-                <OptsWrapper>
-                  {option.items.map((item) => (
-                    <Opt htmlFor={item.title}>
-                      <span>
-                        {item.title} ({item.price} ₽)
-                      </span>
-                      <input
-                        type="radio"
-                        checked={desc.card?.options
-                          .map((o) => o.subtitle)
-                          .includes(item.title)}
-                        onChange={() => changeOption(option.title, item)}
-                        id={item.title}
-                        name={item.title}
-                      />
-                    </Opt>
-                  ))}
-                </OptsWrapper>
-              </Option>
-            ))}
-          </OptionsWrapper>
-        </Container>
-        <Container>
-          <ContainerTitle>состав</ContainerTitle>
-          <Text>
-            Кофейная основа (3 в 1), вода питьевая, лед, взбитые сливки,
-            печенье, может содержать картофельное пюре, баклажан
-          </Text>
-        </Container>
-        <Container>
-          <SizeWrapper>
-            {desc.card.details.map((detail) => (
-              <SizeButton disabled $isSmall>
-                <span>{detail.title}</span>
-                <h3>{detail.amount}</h3>
-              </SizeButton>
-            ))}
-          </SizeWrapper>
-        </Container>
+        </ScrollContainer>
         <Container>
           <Button
             onClick={() =>
@@ -158,6 +160,12 @@ export function DescriptionCard() {
     </ModalWrapper>
   );
 }
+
+const ScrollContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+`;
 
 const Opt = styled.label`
   display: flex;
@@ -233,7 +241,7 @@ const Gradient = styled.div`
   width: 100%;
   min-height: 300px;
   background: linear-gradient(
-    rgba(153, 152, 159, 0),
+    rgba(153, 152, 159, 0) 30%,
     ${(p) => p.theme.background.primary}
   );
   display: flex;
@@ -270,6 +278,7 @@ const Header = styled.div`
   align-items: center;
   padding: 10px;
   width: 100%;
+  background: ${(props) => props.theme.background.secondary};
 `;
 
 const Button = styled.button`

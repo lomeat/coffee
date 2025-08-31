@@ -4,13 +4,14 @@ import styled from "styled-components";
 import { Icon } from "../icon";
 import { ChoosePlaceButton } from "./place-button";
 import { useAtom, useAtomValue } from "jotai";
-import { cartAtom, totalCartAtom } from "../atoms/cart.atom";
+import { cartAtom, countCardAtom, totalCartAtom } from "../atoms/cart.atom";
 import { Flex } from "../styles/shared";
 
 export function Basket() {
   const [isVisible, setIsVisible] = useState(false);
   const [cart, setCart] = useAtom(cartAtom);
   const total = useAtomValue(totalCartAtom);
+  const count = useAtomValue(countCardAtom);
 
   function toggleModal() {
     setIsVisible((state) => !state);
@@ -23,6 +24,7 @@ export function Basket() {
   return (
     <>
       <BasketButton onClick={toggleModal}>
+        {!!count && <Badge>{count}</Badge>}
         <Icon name="CartIcon" size={24} />
         <span>{total} ₽</span>
       </BasketButton>
@@ -166,4 +168,19 @@ const BasketButton = styled.button`
     color: inherit;
     stroke: currentColor;
   }
+`;
+
+const Badge = styled.div`
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: red;
+  color: white;
 `;
