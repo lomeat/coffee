@@ -14,13 +14,6 @@ import { cartAtom } from "../atoms/cart.atom";
 import { useEffect, useState } from "react";
 import { ContainerTitle } from "../styles/shared";
 
-const details = [
-  { title: "Энергия", amount: "250 ккал" },
-  { title: "Белки", amount: "10.1 г" },
-  { title: "Жиры", amount: "12 г" },
-  { title: "Углеводы", amount: "15.4 г" },
-];
-
 const options = [
   {
     title: "сахар",
@@ -62,7 +55,6 @@ export function DescriptionCard() {
   const [desc, setDesc] = useAtom(descriptionModalAtom);
   const setCart = useSetAtom(cartAtom);
   const [size, setSize] = useState<Size>(sizes[0]);
-  const actualPrice = useAtomValue(actualPriceAtom);
   const [price, setPrice] = useState<number>(Number(desc.card?.price));
 
   const initPrice = Number(desc.card?.price);
@@ -152,7 +144,7 @@ export function DescriptionCard() {
         </Container>
         <Container>
           <SizeWrapper>
-            {details.map((detail) => (
+            {desc.card.details.map((detail) => (
               <SizeButton disabled $isSmall>
                 <span>{detail.title}</span>
                 <h3>{detail.amount}</h3>
