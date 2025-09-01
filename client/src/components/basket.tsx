@@ -8,6 +8,7 @@ import { cartAtom, countCardAtom, totalCartAtom } from "../atoms/cart.atom";
 import { ContainerTitle, Flex } from "../styles/shared";
 import { descriptionModalAtom } from "../atoms/modal.atom";
 import type { Card } from "../atoms/coffee.atom";
+import { recentlyCardsAtom } from "../atoms/recently.atom";
 
 export function Basket() {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,6 +16,7 @@ export function Basket() {
   const total = useAtomValue(totalCartAtom);
   const count = useAtomValue(countCardAtom);
   const setDescCard = useSetAtom(descriptionModalAtom);
+  const setRecently = useSetAtom(recentlyCardsAtom);
 
   function toggleModal() {
     setIsVisible((state) => !state);
@@ -31,11 +33,18 @@ export function Basket() {
     ]);
   }
 
-  // Сделать нормально, чтобы все падало в recently
-  // и починить кнопку чтобы внизу всегда была
   function pay() {
     setCart([]);
     toggleModal();
+
+    const unique = new Set(cart.map((c) => c.title));
+    const recently = [...unique]
+      .map((u) => cart.find((c) => c.title === u) || "empty")
+      .filter((a) => a !== "empty");
+
+    console.log([...unique]);
+
+    setRecently(recently);
   }
 
   return (

@@ -8,10 +8,14 @@ import {
   CardRow,
   CardTitle,
 } from "./shared";
-import { coffeeCardsAtom } from "../../atoms/coffee.atom";
+import { recentlyCardsAtom } from "../../atoms/recently.atom";
 
 export function CatalogRecently() {
-  const cards = useAtomValue(coffeeCardsAtom);
+  const cards = useAtomValue(recentlyCardsAtom);
+
+  if (!cards.length) {
+    return null;
+  }
 
   return (
     <Container>
