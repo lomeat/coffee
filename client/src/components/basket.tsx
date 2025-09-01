@@ -3,15 +3,18 @@ import styled from "styled-components";
 
 import { Icon } from "../icon";
 import { ChoosePlaceButton } from "./place-button";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { cartAtom, countCardAtom, totalCartAtom } from "../atoms/cart.atom";
-import { Flex } from "../styles/shared";
+import { ContainerTitle, Flex } from "../styles/shared";
+import { descriptionModalAtom } from "../atoms/modal.atom";
+import type { Card } from "../atoms/coffee.atom";
 
 export function Basket() {
   const [isVisible, setIsVisible] = useState(false);
   const [cart, setCart] = useAtom(cartAtom);
   const total = useAtomValue(totalCartAtom);
   const count = useAtomValue(countCardAtom);
+  const setDescCard = useSetAtom(descriptionModalAtom);
 
   function toggleModal() {
     setIsVisible((state) => !state);
@@ -19,6 +22,13 @@ export function Basket() {
 
   function removeCoffee(id: number) {
     setCart((state) => state.filter((a) => a.id !== id));
+  }
+
+  function addCoffee(coffee: Card) {
+    setCart((state) => [
+      ...state,
+      { ...coffee, id: state.length ? state[state.length - 1].id + 1 : 0 },
+    ]);
   }
 
   // Сделать нормально, чтобы все падало в recently
@@ -51,37 +61,111 @@ export function Basket() {
           <ScrollContainer>
             <Container>
               {cart.map((coffee) => (
-                <Card key={coffee.id}>
-                  <Image style={{ width: "100px" }} src={coffee.imageUrl} />
-                  <Flex $isColumn>
-                    <Title>{coffee.title}</Title>
-                    <Title>{coffee.price} ₽</Title>
+                <CardWrapper key={coffee.id}>
+                  <OpenDescModal
+                    onClick={() =>
+                      setDescCard({ isVisible: true, card: coffee })
+                    }
+                  >
+                    {coffee.imageUrl && <Image $imageUrl={coffee.imageUrl} />}
+                    <CoffeeDesc>
+                      <Title>{coffee.title}</Title>
+                      <SubTitle>{coffee.size.amount} мл</SubTitle>
+                      <Options>
+                        + {coffee.options.map((opt) => opt.subtitle).join(", ")}
+                      </Options>
+                    </CoffeeDesc>
+                  </OpenDescModal>
+                  <Flex $isColumn style={{ height: "100%" }} $gap={10}>
+                    <Price>{coffee.price} ₽</Price>
+                    <Flex $gap={10}>
+                      <CoffeeButton onClick={() => addCoffee(coffee)}>
+                        <Icon name="PlusIcon" />
+                      </CoffeeButton>
+                      <CoffeeButton onClick={() => removeCoffee(coffee.id)}>
+                        <Icon name="CrossIcon" />
+                      </CoffeeButton>
+                    </Flex>
                   </Flex>
-                  <DeleteButton onClick={() => removeCoffee(coffee.id)}>
-                    <Icon name="CrossIcon" />
-                  </DeleteButton>
-                </Card>
+                </CardWrapper>
               ))}
             </Container>
           </ScrollContainer>
-          <Container>
+          <FixedContainer>
+            <Flex $gap={10} $isColumn>
+              <ContainerTitle>время выдачи</ContainerTitle>
+              <SelectButton>
+                <Flex $gap={10}>
+                  <Icon name="TimeIcon" />
+                  <span>15 минут</span>
+                </Flex>
+                <Icon name="ArrowDownIcon" rotate={270} />
+              </SelectButton>
+            </Flex>
+            <Flex $gap={10} $isColumn>
+              <ContainerTitle>способ оплаты</ContainerTitle>
+              <SelectButton>
+                <Flex $gap={10}>
+                  <Icon name="PaymentCashIcon" />
+                  <span>наличные</span>
+                </Flex>
+                <Icon name="ArrowDownIcon" rotate={270} />
+              </SelectButton>
+            </Flex>
             <Button onClick={pay}>Оплатить {total} ₽</Button>
-          </Container>
+          </FixedContainer>
         </BasketWrapper>
       </ModalWrapper>
     </>
   );
 }
 
-const Card = styled.div`
+const SelectButton = styled.button`
+  padding: 15px;
+  border-radius: 15px;
+  ${(p) => p.theme.font.text.large}
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
-const Image = styled.img`
+const CoffeeDesc = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  max-width: 150px;
+`;
+
+const Price = styled.span`
+  width: 100%;
+  text-align: right;
+  color: ${(p) => p.theme.color.accent};
+  ${(p) => p.theme.font.text.medium}
+`;
+
+const OpenDescModal = styled.div<{
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}>`
+  display: flex;
+  gap: 10px;
+`;
+
+const CardWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 0 auto;
+`;
+
+const Image = styled.div<{ $imageUrl: string }>`
   width: 85px;
   height: 100px;
+  background: ${(p) => p.theme.background.secondary};
+  border-radius: 10px;
+  background-image: url(${(p) => p.$imageUrl});
+  background-size: contain;
+  background-position-y: 25px;
+  background-repeat: no-repeat;
 `;
 
 const Title = styled.span`
@@ -89,7 +173,19 @@ const Title = styled.span`
   color: ${(p) => p.theme.color.primary};
 `;
 
-const DeleteButton = styled.button`
+const SubTitle = styled.span`
+  ${(p) => p.theme.font.desc};
+  color: ${(p) => p.theme.color.primary};
+`;
+
+const Options = styled.span`
+  ${(p) => p.theme.font.desc};
+  color: ${(p) => p.theme.color.secondary};
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const CoffeeButton = styled.button`
   border: 0;
   background: ${(p) => p.theme.background.secondary};
   padding: 10px;
@@ -100,6 +196,7 @@ const ScrollContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+  padding-bottom: 300px;
 `;
 
 const Container = styled.div`
@@ -140,6 +237,13 @@ const Button = styled.button`
   }
 `;
 
+const FixedContainer = styled(Container)`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  gap: 20px;
+`;
+
 const BasketWrapper = styled.div`
   background: ${(p) => p.theme.background.primary};
   position: relative;
@@ -147,6 +251,7 @@ const BasketWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  overflow: hidden;
 `;
 
 const BasketTitle = styled.h2`

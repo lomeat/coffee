@@ -14,5 +14,6 @@ export const theme: Omit<DefaultTheme, "font"> = {
     secondary: "rgba(64, 40, 36, 0.45)",
     accent: "#2E3AC2",
     button: "#ffffff",
+    fail: "#F5222D",
   },
 };

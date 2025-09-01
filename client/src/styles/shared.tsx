@@ -13,7 +13,7 @@ export const Flex = styled.div<{
   flex-direction: ${({ $isColumn }) => ($isColumn ? "column" : "row")};
   gap: ${({ $gap }) => `${$gap}px`};
   padding: ${({ $padding }) => `${$padding}px`};
-  align-items: center;
+  align-items: ${(p) => (p.$isColumn ? "normal" : "center")};
 `;
 
 export const Container = styled.div`

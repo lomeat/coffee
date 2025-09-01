@@ -21,12 +21,14 @@ declare module "styled-components" {
       heading: Font;
       caption: { large: Font; small: Font };
       text: { large: Font; medium: Font; small: Font };
+      desc: Font;
     };
     color: {
       primary: string;
       secondary: string;
       accent: string;
       button: string;
+      fail: string;
     };
   }
 }
