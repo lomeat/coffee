@@ -198,10 +198,12 @@ const coffeeCards: Card[] = [
 
 // --- Atoms ---
 
-export const tagsAtom = atom(tags);
+export const tagsAtom = atom<Tag[]>(tags);
 
 function getTags(types: TagType[]): Tag[] {
   return tags.filter((tag) => types.includes(tag.type));
 }
 
-export const coffeeCardsAtom = atom(coffeeCards);
+export const coffeeCardsAtom = atom<Card[]>(coffeeCards);
+
+export const searchCardsAtom = atom<Card[]>(coffeeCards);

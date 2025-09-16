@@ -23,7 +23,7 @@ export function Icon({ name, size, color, type, onClick, rotate }: IconProps) {
           width={size || 24}
           height={size || 24}
           color={color || "#402824"}
-          style={rotate ? { rotate: `${rotate}deg` } : {}}
+          style={{ rotate: `${rotate || 0}deg` }}
         />
       </Button>
     );

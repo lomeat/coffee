@@ -1,16 +1,34 @@
 import { useContext } from "react";
-import styled from "styled-components";
 
 import { ThemeContext } from "../styles/context";
 import { Flex } from "../styles/shared";
 import { Icon } from "../icon";
 import { ChoosePlaceButton } from "./place-button";
+import { Search } from "../ui/search";
+import { useAtomValue, useSetAtom, type SetStateAction } from "jotai";
+import { coffeeCardsAtom, searchCardsAtom } from "../atoms/coffee.atom";
 
-export function Header() {
+type Props = {
+  search: string;
+  setSearch: React.Dispatch<SetStateAction<string>>;
+};
+
+export function Header({ search, setSearch }: Props) {
   const toggleTheme = useContext(ThemeContext);
 
+  const setCards = useSetAtom(searchCardsAtom);
+  const coffeeCards = useAtomValue(coffeeCardsAtom);
+
+  function handleSubmit() {
+    setCards(
+      coffeeCards.filter((card) =>
+        card.title.toLowerCase().trim().includes(search.trim().toLowerCase())
+      )
+    );
+  }
+
   return (
-    <Wrapper>
+    <Flex $isColumn $gap={10} $padding={20}>
       <Flex $isSpace>
         <ChoosePlaceButton />
         <Flex $gap={10}>
@@ -18,33 +36,12 @@ export function Header() {
           <Icon name="ProfileIcon" type="button" />
         </Flex>
       </Flex>
-      <HeaderSearch placeholder="найди свой напиток" />
-    </Wrapper>
+      <Search
+        value={search}
+        setValue={setSearch}
+        isReactive
+        onSubmit={handleSubmit}
+      />
+    </Flex>
   );
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  gap: 10px;
-  background: ${(p) => p.theme.background.primary};
-`;
-
-const HeaderSearch = styled.input`
-  border-radius: 15px;
-  padding: 15px;
-  background: ${(p) => p.theme.background.button};
-  border: 1px solid transparent;
-  outline: none;
-
-  &::placeholder {
-    color: ${(p) => p.theme.color.secondary};
-  }
-
-  &:focus {
-    color: ${(p) => p.theme.color.primary};
-    border: 1px solid rgba(64, 40, 36, 0.45);
-    background: ${(p) => p.theme.background.primary};
-  }
-`;

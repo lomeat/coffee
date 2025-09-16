@@ -15,6 +15,7 @@ import {
 } from "./shared";
 import {
   coffeeCardsAtom,
+  searchCardsAtom,
   tagsAtom,
   type Card,
   type TagType,
@@ -22,12 +23,17 @@ import {
 import { cartAtom } from "../../atoms/cart.atom";
 import { descriptionModalAtom } from "../../atoms/modal.atom";
 
-export function Catalog() {
+interface Props {
+  isSearching?: boolean;
+}
+
+export function Catalog({ isSearching }: Props) {
   const initCards = useAtomValue(coffeeCardsAtom);
   const [category, setCategory] = useState("all");
   const [cards, setCards] = useState(initCards);
   const setCart = useSetAtom(cartAtom);
   const setDesc = useSetAtom(descriptionModalAtom);
+  const searchCards = useAtomValue(searchCardsAtom);
 
   function pickCategory(type: TagType) {
     setCategory(type);
@@ -54,21 +60,31 @@ export function Catalog() {
 
   const tags = useAtomValue(tagsAtom);
 
+  if (isSearching && !searchCards.length) {
+    return (
+      <Container>
+        <h3>Нет кофеечков</h3>
+      </Container>
+    );
+  }
+
   return (
     <Container>
-      <CatalogNavBar>
-        {tags.map((tag) => (
-          <CatalogButton
-            key={tag.id}
-            $isActive={tag.type === category}
-            onClick={() => pickCategory(tag.type)}
-          >
-            {tag.title}
-          </CatalogButton>
-        ))}
-      </CatalogNavBar>
+      {!isSearching && (
+        <CatalogNavBar>
+          {tags.map((tag) => (
+            <CatalogButton
+              key={tag.id}
+              $isActive={tag.type === category}
+              onClick={() => pickCategory(tag.type)}
+            >
+              {tag.title}
+            </CatalogButton>
+          ))}
+        </CatalogNavBar>
+      )}
       <CardGrid>
-        {cards.map((card) => (
+        {(isSearching ? searchCards : cards).map((card) => (
           <CardContainer key={card.id}>
             <CardClickable>
               <OpenButton onClick={() => toggleDescModal(card)} />
