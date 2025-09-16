@@ -206,4 +206,12 @@ function getTags(types: TagType[]): Tag[] {
 
 export const coffeeCardsAtom = atom<Card[]>(coffeeCards);
 
-export const searchCardsAtom = atom<Card[]>(coffeeCards);
+export const searchValueAtom = atom<string>("");
+
+export const searchCardsAtom = atom<Card[]>((get) => {
+  const cards = get(coffeeCardsAtom);
+  const value = get(searchValueAtom);
+  return cards.filter((card) =>
+    card.title.trim().toLowerCase().includes(value.trim().toLowerCase())
+  );
+});

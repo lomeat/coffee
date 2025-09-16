@@ -16,6 +16,7 @@ import {
 import {
   coffeeCardsAtom,
   searchCardsAtom,
+  searchValueAtom,
   tagsAtom,
   type Card,
   type TagType,
@@ -23,17 +24,14 @@ import {
 import { cartAtom } from "../../atoms/cart.atom";
 import { descriptionModalAtom } from "../../atoms/modal.atom";
 
-interface Props {
-  isSearching?: boolean;
-}
-
-export function Catalog({ isSearching }: Props) {
+export function Catalog() {
   const initCards = useAtomValue(coffeeCardsAtom);
   const [category, setCategory] = useState("all");
   const [cards, setCards] = useState(initCards);
   const setCart = useSetAtom(cartAtom);
   const setDesc = useSetAtom(descriptionModalAtom);
   const searchCards = useAtomValue(searchCardsAtom);
+  const isSearching = !!useAtomValue(searchValueAtom);
 
   function pickCategory(type: TagType) {
     setCategory(type);

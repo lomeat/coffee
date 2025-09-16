@@ -7,25 +7,26 @@ import { Container } from "./styles/shared";
 import { CatalogRecently } from "./components/catalog/recently";
 import { Catalog } from "./components/catalog/common";
 import { DescriptionCard } from "./components/description";
-import { useState } from "react";
+import { useAtomValue } from "jotai";
+import { searchValueAtom } from "./atoms/coffee.atom";
 
 const promoImages = importImages("promo");
 
 export function App() {
-  const [search, setSearch] = useState<string>("");
+  const searchValue = useAtomValue(searchValueAtom);
 
-  if (search) {
+  if (searchValue) {
     return (
       <Wrapper>
-        <Header search={search} setSearch={setSearch} />
-        <Catalog isSearching={!!search} />
+        <Header />
+        <Catalog />
       </Wrapper>
     );
   }
 
   return (
     <Wrapper>
-      <Header search={search} setSearch={setSearch} />
+      <Header />
 
       <CatalogRecently />
       <Container>

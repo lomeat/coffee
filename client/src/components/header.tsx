@@ -5,27 +5,12 @@ import { Flex } from "../styles/shared";
 import { Icon } from "../icon";
 import { ChoosePlaceButton } from "./place-button";
 import { Search } from "../ui/search";
-import { useAtomValue, useSetAtom, type SetStateAction } from "jotai";
-import { coffeeCardsAtom, searchCardsAtom } from "../atoms/coffee.atom";
+import { useAtom } from "jotai";
+import { searchValueAtom } from "../atoms/coffee.atom";
 
-type Props = {
-  search: string;
-  setSearch: React.Dispatch<SetStateAction<string>>;
-};
-
-export function Header({ search, setSearch }: Props) {
+export function Header() {
   const toggleTheme = useContext(ThemeContext);
-
-  const setCards = useSetAtom(searchCardsAtom);
-  const coffeeCards = useAtomValue(coffeeCardsAtom);
-
-  function handleSubmit() {
-    setCards(
-      coffeeCards.filter((card) =>
-        card.title.toLowerCase().trim().includes(search.trim().toLowerCase())
-      )
-    );
-  }
+  const [search, setSearch] = useAtom(searchValueAtom);
 
   return (
     <Flex $isColumn $gap={10} $padding={20}>
@@ -36,12 +21,7 @@ export function Header({ search, setSearch }: Props) {
           <Icon name="ProfileIcon" type="button" />
         </Flex>
       </Flex>
-      <Search
-        value={search}
-        setValue={setSearch}
-        isReactive
-        onSubmit={handleSubmit}
-      />
+      <Search value={search} setValue={setSearch} />
     </Flex>
   );
 }
