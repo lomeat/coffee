@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 import { useAtomValue, useSetAtom } from "jotai";
 
 import { Container } from "../../styles/shared";
@@ -21,14 +20,12 @@ import {
   type Card,
   type TagType,
 } from "../../atoms/coffee.atom";
-import { cartAtom } from "../../atoms/cart.atom";
 import { descriptionModalAtom } from "../../atoms/modal.atom";
 
 export function Catalog() {
   const initCards = useAtomValue(coffeeCardsAtom);
   const [category, setCategory] = useState("all");
   const [cards, setCards] = useState(initCards);
-  const setCart = useSetAtom(cartAtom);
   const setDesc = useSetAtom(descriptionModalAtom);
   const searchCards = useAtomValue(searchCardsAtom);
   const isSearching = !!useAtomValue(searchValueAtom);
@@ -47,13 +44,6 @@ export function Catalog() {
 
   function toggleDescModal(card: Card) {
     setDesc((state) => ({ isVisible: !state.isVisible, card }));
-  }
-
-  function addCoffee(card: Card) {
-    setCart((state) => [
-      ...state,
-      { ...card, id: state.length ? state[state.length - 1].id + 1 : 1 },
-    ]);
   }
 
   const tags = useAtomValue(tagsAtom);
@@ -83,11 +73,7 @@ export function Catalog() {
       )}
       <CardGrid>
         {(isSearching ? searchCards : cards).map((card) => (
-          <CardContainer key={card.id}>
-            <CardClickable>
-              <OpenButton onClick={() => toggleDescModal(card)} />
-              <BuyButton onClick={() => addCoffee(card)} />
-            </CardClickable>
+          <CardContainer key={card.id} onClick={() => toggleDescModal(card)}>
             <CardInfoContainer>
               <CardTitle>{card.title}</CardTitle>
               <CardPrice>{card.price} ₽</CardPrice>
@@ -99,31 +85,3 @@ export function Catalog() {
     </Container>
   );
 }
-
-const ButtonNoStyles = styled.button`
-  padding: 0;
-  margin: 0;
-  background-color: transparent;
-  border: 0;
-  outline: none;
-  width: inherit;
-`;
-
-const OpenButton = styled(ButtonNoStyles)`
-  height: 70%;
-`;
-
-const BuyButton = styled(ButtonNoStyles)`
-  height: 30%;
-`;
-
-const CardClickable = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  width: inherit;
-  height: inherit;
-  top: 0;
-  left: 0;
-  z-index: 3;
-`;

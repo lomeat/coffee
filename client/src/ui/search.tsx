@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Icon } from "../icon";
 
 import { lightTheme } from "../styles";
-// import { useEffect } from "react";
 
 type Props = {
   value: string;
@@ -22,18 +21,6 @@ export function Search({
   placeholder,
   isReactive,
 }: Props) {
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     if (isReactive) {
-  //       onSubmit?.();
-  //     }
-  //   }, 750);
-
-  //   return () => {
-  //     clearTimeout(handler);
-  //   };
-  // }, [value, isReactive, onSubmit]);
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;
     setValue(value);
