@@ -1,19 +1,22 @@
 import styled from "styled-components";
 import { Icon } from "../icon";
 import { Flex } from "../styles/shared";
+import { isVisibleAtom } from "../atoms/modal.atom";
+import { useAtom } from "jotai";
 
 type Props = {
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isArrow?: boolean;
 };
 
-export function ChoosePlaceButton({ onClick, isArrow }: Props) {
+export function ChoosePlaceButton({ isArrow }: Props) {
+  const [isVisible, setIsVisible] = useAtom(isVisibleAtom);
+
   if (isArrow) {
     return (
-      <Flex $isSpace onClick={onClick}>
+      <Flex $isSpace onClick={() => setIsVisible({ ...isVisible, cafe: true })}>
         <Flex $gap={10}>
           <Icon name="MapIcon" />
-          <HeaderSpan>Выбрать кофейню</HeaderSpan>
+          <Button>Выбрать кофейню</Button>
         </Flex>
         <Icon name="ArrowDownIcon" rotate={-90} />
       </Flex>
@@ -21,13 +24,14 @@ export function ChoosePlaceButton({ onClick, isArrow }: Props) {
   }
 
   return (
-    <Flex $gap={10} onClick={onClick}>
+    <Flex $gap={10} onClick={() => setIsVisible({ ...isVisible, cafe: true })}>
       <Icon name="MapIcon" type="button" />
-      <HeaderSpan>Выбрать кофейню</HeaderSpan>
+      <Button>Выбрать кофейню</Button>
     </Flex>
   );
 }
 
-const HeaderSpan = styled.span`
+const Button = styled.button`
   ${({ theme }) => theme.font.text.large}
+  background: transparent;
 `;

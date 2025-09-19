@@ -29,3 +29,9 @@ export const ContainerTitle = styled.h2`
   margin: 0;
   padding: 0;
 `;
+
+export const ScrollContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+`;
