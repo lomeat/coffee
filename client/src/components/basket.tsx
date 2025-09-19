@@ -9,6 +9,7 @@ import { ContainerTitle, Flex } from "../styles/shared";
 import { descriptionModalAtom } from "../atoms/modal.atom";
 import type { Card } from "../atoms/coffee.atom";
 import { recentlyCardsAtom } from "../atoms/recently.atom";
+import { SelectModal } from "./select-modal";
 
 export function Basket() {
   const [isVisible, setIsVisible] = useState(false);
@@ -103,13 +104,12 @@ export function Basket() {
           <FixedContainer>
             <Flex $gap={10} $isColumn>
               <ContainerTitle>время выдачи</ContainerTitle>
-              <SelectButton>
-                <Flex $gap={10}>
-                  <Icon name="TimeIcon" />
-                  <span>15 минут</span>
-                </Flex>
-                <Icon name="ArrowDownIcon" rotate={270} />
-              </SelectButton>
+              <SelectModal
+                options={["быстрее", "30 минут"]}
+                actionName="выбрать время"
+                action={() => console.log("time was chosen")}
+                title="выбери время"
+              />
             </Flex>
             <Flex $gap={10} $isColumn>
               <ContainerTitle>способ оплаты</ContainerTitle>
